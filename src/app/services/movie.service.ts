@@ -6,13 +6,14 @@ import { catchError, distinctUntilChanged, map, tap } from 'rxjs/operators';
 import { StorageService } from './storage.service';
 import { Movie, APIResponse } from '../models/movie.model';
 import { NotificationService } from './notification.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
-  private apiUrl = 'https://imdb236.p.rapidapi.com/imdb/search';
   private localStorageKey = 'imdb_movies_tmp';
+  private apiConfig = environment.apiConfig;
 
   // Subject para manejar el estado de las películas en memoria
   private moviesSubject = new BehaviorSubject<Movie[]>([]);
@@ -36,14 +37,10 @@ export class MovieService {
 
   // Carga películas desde la API externa y actualiza el estado interno
   loadMoviesFromApi(): Observable<Movie[]> {
-    const headers = new HttpHeaders({
-      'x-rapidapi-key': 'a68c72c70cmsheda119d0ebbf595p1eea68jsn571b77757908',
-      'x-rapidapi-host': 'imdb236.p.rapidapi.com'
-    });
+    const headers = new HttpHeaders(this.apiConfig.headers);
+    const params = this.apiConfig.defaultParams; // Parámetros para la consulta
 
-    const params = { type: 'movie', genre: 'Drama', rows: '25' }; // Parámetros para la consulta
-
-    return this.http.get<APIResponse>(this.apiUrl, { headers, params }).pipe(
+    return this.http.get<APIResponse>(this.apiConfig.url, { headers, params }).pipe(
       map(response => response.results || []),
       tap(movies => {
         this.updateMoviesState(movies); // Actualiza el estado con las nuevas películas
