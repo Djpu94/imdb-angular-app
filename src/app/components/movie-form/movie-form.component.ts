@@ -3,8 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Movie } from '../../models/movie.model';
 import { MovieService } from '../../services/movie.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-
 
 @Component({
   selector: 'app-movie-form',
@@ -22,13 +20,12 @@ export class MovieFormComponent {
     private fb: FormBuilder,
     private movieService: MovieService,
     public dialogRef: MatDialogRef<MovieFormComponent>,
-    private router: Router,
-    private route: ActivatedRoute,
     @Inject(MAT_DIALOG_DATA) public data: { isEdit: boolean, movie?: Movie }
-
   ) {
+
     this.isEditMode = data.isEdit;
 
+    // Inicialización del formulario con sus controles y validaciones
     this.movieForm = this.fb.group({
       id: [''],
       primaryTitle: ['', [
@@ -53,6 +50,7 @@ export class MovieFormComponent {
       isAdult: [false]
     });
 
+    // Si se está editando y se proporciona una película, se rellenan los campos del formulario
     if (this.isEditMode && data.movie) {
       this.movieForm.patchValue(data.movie);
     }
@@ -60,22 +58,25 @@ export class MovieFormComponent {
 
   ngOnInit(): void { }
 
+  // Maneja el envío del formulario
   onSubmit(): void {
+    // Solo se ejecuta si el formulario es válido
     if (this.movieForm.valid) {
       const movie = this.movieForm.value as Movie;
+
+      // Si es modo edición, se actualiza la película
       if (this.isEditMode) {
         this.movieService.updateMovie(movie);
-        this.dialogRef.close(true);
+        this.dialogRef.close(true); // Cierra el diálogo y pasa `true` como indicador de éxito
       } else {
+        // Si es nuevo, se agrega la película
         this.movieService.addMovie(movie);
-        this.dialogRef.close(true);
+        this.dialogRef.close(); // Cierra el diálogo sin pasar estado
       }
-      this.router.navigate(['/']);
     }
   }
 
-  // Getters para acceder fácilmente a los controles del formulario
-
+  // Getters para facilitar el acceso a los controles del formulario en la plantilla HTML
   get primaryTitle() { return this.movieForm.get('primaryTitle'); }
   get releaseDate() { return this.movieForm.get('releaseDate'); }
   get runtimeMinutes() { return this.movieForm.get('runtimeMinutes'); }

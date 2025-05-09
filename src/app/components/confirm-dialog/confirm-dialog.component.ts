@@ -1,6 +1,8 @@
+
 import { Component, Inject } from '@angular/core';
 import {
-  MAT_DIALOG_DATA, MatDialog,
+  MAT_DIALOG_DATA,
+  MatDialog,
   MatDialogRef,
   MatDialogActions,
   MatDialogClose,
@@ -9,16 +11,29 @@ import {
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
+
 @Component({
   selector: 'app-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
   styleUrl: './confirm-dialog.component.scss',
   standalone: true,
-  imports: [MatButtonModule, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent],
+
+  imports: [
+    MatButtonModule,
+    MatDialogActions,
+    MatDialogClose,
+    MatDialogTitle,
+    MatDialogContent,
+  ],
 })
 export class ConfirmDialogComponent {
+
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { message: string }
+    @Inject(MAT_DIALOG_DATA) public data: {
+      title?: string; // Título opcional del diálogo
+      message: string; // Mensaje principal (requerido)
+      confirmText?: string; // Texto opcional para el botón de confirmación
+    }
   ) { }
 }
