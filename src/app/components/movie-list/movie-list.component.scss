@@ -1,0 +1,70 @@
+.search-container {
+    padding: 20px 0;
+
+    .full-width {
+        width: 100%;
+    }
+}
+
+.table-container {
+    overflow-x: auto;
+
+    .poster-image {
+        width: 50px;
+        height: 75px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    .loading-spinner {
+        display: flex;
+        justify-content: center;
+        padding: 50px;
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 50px;
+
+        mat-icon {
+            font-size: 50px;
+            width: 50px;
+            height: 50px;
+            color: rgba(0, 0, 0, 0.54);
+        }
+
+        p {
+            margin: 20px 0;
+            color: rgba(0, 0, 0, 0.54);
+        }
+    }
+}
+
+// Estilos para las estrellas de valoración
+mat-icon {
+    &.full-star {
+        color: #ffd740; // Amarillo para estrellas llenas
+    }
+
+    &.half-star {
+        color: #ffd740; // Amarillo para media estrella
+    }
+
+    &.empty-star {
+        color: rgba(0, 0, 0, 0.54); // Gris para estrellas vacías
+    }
+}
+
+.rating-value {
+    margin-left: 8px;
+    font-size: 0.9em;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+@media (max-width: 600px) {
+    .table-container {
+        .mat-table {
+            min-width: 500px;
+        }
+    }
+}

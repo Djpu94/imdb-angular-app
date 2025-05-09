@@ -1,10 +1,21 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'imdb-angular-app';
+  title = 'IMDb Movies CRUD';
+
+  constructor(private router: Router) { }
+
+  navigateToList(): void {
+    this.router.navigate(['/']);
+  }
+
+  navigateToAdd(): void {
+    this.router.navigate(['/movies/add']);
+  }
 }

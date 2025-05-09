@@ -1,0 +1,41 @@
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+    }
+
+    .full-width {
+        width: 100%;
+    }
+
+    .half-width {
+        width: calc(50% - 8px);
+        margin-right: 16px;
+
+        &:nth-child(2n) {
+            margin-right: 0;
+        }
+    }
+
+    mat-card-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 600px) {
+    .form-container {
+        padding: 10px;
+
+        .half-width {
+            width: 100%;
+            margin-right: 0;
+        }
+    }
+}

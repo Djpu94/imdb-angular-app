@@ -1,0 +1,70 @@
+<form [formGroup]="movieForm">
+  <h2 mat-dialog-title>{{ isEditMode ? 'Editar' : 'Añadir' }} Película</h2>
+
+  <mat-dialog-content>
+    <mat-form-field appearance="fill">
+      <mat-label>Título</mat-label>
+      <input matInput formControlName="primaryTitle" required>
+      <mat-error *ngIf="primaryTitle?.hasError('required')">
+        El título es requerido
+      </mat-error>
+      <mat-error *ngIf="primaryTitle?.hasError('minlength')">
+        Mínimo 2 caracteres
+      </mat-error>
+      <mat-error *ngIf="primaryTitle?.hasError('maxlength')">
+        Máximo 200 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Fecha de lanzamiento</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="releaseDate" required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="releaseDate?.hasError('required')">
+        La fecha es requerida
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Duración (minutos)</mat-label>
+      <input matInput type="number" formControlName="runtimeMinutes">
+      <mat-error *ngIf="runtimeMinutes?.hasError('min')">
+        Mínimo 1 minuto
+      </mat-error>
+      <mat-error *ngIf="runtimeMinutes?.hasError('max')">
+        Máximo 600 minutos
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Géneros</mat-label>
+      <mat-select formControlName="genres" multiple required>
+        <mat-option *ngFor="let genre of genresList" [value]="genre">{{ genre }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="genres?.hasError('required')">
+        Al menos un género es requerido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Rating (0-10)</mat-label>
+      <input matInput type="number" step="0.1" formControlName="averageRating">
+      <mat-error *ngIf="averageRating?.hasError('min')">
+        Mínimo 0
+      </mat-error>
+      <mat-error *ngIf="averageRating?.hasError('max')">
+        Máximo 10
+      </mat-error>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="isAdult">Contenido para adultos</mat-checkbox>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" mat-dialog-close>Cancelar</button>
+    <button mat-raised-button color="primary" [disabled]="movieForm.invalid" (click)="onSubmit()">
+      {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </mat-dialog-actions>
+</form>
